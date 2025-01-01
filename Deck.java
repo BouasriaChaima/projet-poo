@@ -1,26 +1,56 @@
 import java.util.ArrayList; 
-
-public class DrawTwo extends Card { 
-    public DrawTwo(String color) { 
-        super(color, "Draw Two", -1); //-1 indique que c une carte speciale sans une valeur numerique 
+import java.util.Collections; 
  
+public class Deck { 
+    private ArrayList<Card> cards; 
+    public Deck() { 
+        cards = new ArrayList<>(); 
+        initializeDeck(); 
+        shuffle(); 
     } 
  
-    // method to apply the effect of the Draw Two card 
-    public void applyEffect(ArrayList<Player> players, int currentPlayerIndex, Deck deck) { 
-        //identify the next player who will draw cards 
-        Player nextPlayer = players.get((currentPlayerIndex + 1) % players.size()); 
-        System.out.println(nextPlayer.getName() + " must draw two cards!"); 
- 
-        //Forcing the next player to draw two cards from the deck 
-        for (int i = 0; i < 2; i++) { 
-            Card drawnCard = deck.drawCard(); // draw card from the deck 
-            if (drawnCard != null) {  
-                nextPlayer.drawCard(drawnCard); //assuming drawCard method adds a card to the player's hand 
-                System.out.println(nextPlayer.getName() + " drew: " + drawnCard.getColor() + " " + drawnCard.getType()); 
-            } else { 
-                System.out.println("The deck is empty! No more cards to draw."); 
+    // une methode to initialize the deck with all card types 
+    private void initializeDeck() { 
+        // on ajoute number cards and special cards to the deck 
+        for (String color : new String[]{"Red", "Green", "Blue", "Yellow"}) { 
+            //++ number cards (0-9) 
+            for (int i = 0; i <= 9; i++) { 
+                cards.add(new Card(color, "Number", i)); 
             } 
+            // ++ special cards 
+            cards.add(new DrawTwo(color)); // ++ Draw Two cards 
+            cards.add(new Skip(color));     // ++ Skip cards 
+            cards.add(new Reverse(color));   // ++ Reverse cards 
         } 
+        // ++ Wild Cards  
+        for (int i = 0; i < 4; i++) { 
+            cards.add(new WildCard());       // ++ Wild cards 
+            cards.add(new WildDrawFour());   // ++ Wild Draw Four cards 
+        } 
+    } 
  
+    // method to shuffle the deck 
+    public void shuffle() { 
+        Collections.shuffle(cards); 
+    } 
+ 
+    //method to draw a card from the deck 
+    public Card drawCard() { 
+        if (cards.isEmpty()) { 
+            System.out.println("The deck is empty!"); 
+            return null;  
+        } 
+        return cards.remove(cards.size() - 1); // draws the ,top card, from the deck 
+    } 
+ 
+    //method to reset the deck (come back) 
+    public void resetDeck() { 
+        cards.clear(); 
+        initializeDeck(); 
+        shuffle(); 
+    } 
+ 
+    // method to get the number of remaining cards in the deck () 
+    public int getRemainingCards() { 
+        return cards.size(); 
     }
