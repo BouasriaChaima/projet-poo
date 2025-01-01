@@ -9,7 +9,7 @@ public class DrawTwo extends Card {
     // method to apply the effect of the Draw Two card 
     public void applyEffect(ArrayList<Player> players, int currentPlayerIndex, Deck deck) { 
         //identify the next player who will draw cards 
-        Player nextPlayer = players.get((currentPlayerIndex + 1) % players.size()); 
+        Player.nextPlayer = players.get((currentPlayerIndex + 1) % players.size()); 
         System.out.println(nextPlayer.getName() + " must draw two cards!"); 
  
         //Forcing the next player to draw two cards from the deck 
