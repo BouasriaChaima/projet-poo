@@ -107,16 +107,54 @@ public class game {
 		 }
 	 }
 	public void GameLogic() {
+		this.ReverseDirection();
 		if(this.TopCard.getColor()=="Red"){//"Red", "Green", "Blue", "Yellow"
 			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
-				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="red") {
-					this.TopCard =
+				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Red") {
+					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
 				}
+				}
+			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
+			   this.CheckUno();
+			   this.checkWinner();
 			}
+		if(this.TopCard.getColor()=="Green"){//"Red", "Green", "Blue", "Yellow"
+			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
+				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Green") {
+					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
+				}
+				}
+			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
+			   this.CheckUno();
+			   this.checkWinner();
+			}
+		if(this.TopCard.getColor()=="Blue"){//"Red", "Green", "Blue", "Yellow"
+			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
+				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Blue") {
+					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
+				}
+				}
+			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
+			   this.CheckUno();
+			   this.checkWinner();
+			}
+		if(this.TopCard.getColor()=="Yellow"){//"Red", "Green", "Blue", "Yellow"
+			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
+				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Yellow") {
+					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
+				}
+				}
+			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
+			   this.CheckUno();
+			   this.checkWinner();
+			}
+		this.drawFour();
+		this.drawTwo();
+		this.Skip();
+		this.Wildcard();
+		this.CheckUno();
+		this.checkWinner();
+		
 		}
 	}
 	 
-	 
-	 
-	 
-}
