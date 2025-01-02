@@ -1,9 +1,9 @@
 import java.util.ArrayList;
+
 import java.util.Scanner;
 
-import poo.player; 
-public class game {
-	 private ArrayList<player> players; 
+  public class Game {
+	 private ArrayList<Player> players; 
 	 private Deck unoDeck;
 	 private Card TopCard;
 	 private int numPlayers;
@@ -13,7 +13,7 @@ public class game {
 	 private String Direction;// 1 if clockwise -1 if otherwise
 	 private Scanner scanner;
 	 
-	 public game(int numP, int numMaxP) {
+	 public Game(int numP, int numMaxP) {
 		 unoDeck = new Deck();
 		 numPlayers = numP;
 		 CurrentPlayer =0;// the index of the first player in the array
@@ -83,7 +83,7 @@ public class game {
 		 
 	 }
 	 public void Skip() {
-		 if(this.TopCard == "Skip1") {
+		 if(this.TopCard.getType() == "Skip1") {
 			 this.rotate();
 		 }
 	 }
