@@ -4,7 +4,7 @@ import java.util.Scanner;
 
   public class Game {
 	 private ArrayList<Player> players; 
-	 private Deck unoDeck;
+	 private Deck UnoDeck;
 	 private Card TopCard;
 	 private int numPlayers;
 	 private int CurrentPlayer;
@@ -14,23 +14,29 @@ import java.util.Scanner;
 	 private Scanner scanner;
 	 
 	 public Game(int numP, int numMaxP) {
-		 unoDeck = new Deck();
+		 UnoDeck = new Deck();
 		 numPlayers = numP;
 		 CurrentPlayer =0;// the index of the first player in the array
 		 numMaxPlayers=numMaxP;
 		 OpenGame = true;
 		 Direction= "right";
-		 TopCard = unoDeck.drawCard();
+		 TopCard = UnoDeck.drawCard();
 		 scanner = new Scanner(System.in);
 	        for (int i = 0; i < numPlayers; i++) {
 	            System.out.println("Enter name for Player " + (i + 1) + ": ");
 	            String name = scanner.next();
 	            Player P= new Player(name);
+	            initialCards(P);
 	            players.add(P);
 	        }
 
 	 }
-
+	// a method to give 7 cards to the player 
+	   public void initialCards (Player p) {
+			   for (int i = 0 ; i<7;i++) {
+				   p.playerHand.add(UnoDeck.drawCard());
+			   }
+	   }  
 	 public void  addPlayer(Player Newplayer){
 			if(this.OpenGame == true){
 				this.players.add(Newplayer);
@@ -49,18 +55,21 @@ import java.util.Scanner;
 		      else if(this.Direction =="left" && this.CurrentPlayer==0) {
 		    	  this.CurrentPlayer = ( players.size() -1);
 		      }
-		    	  else if(this.Direction == "left") {
+		    	  else if(this.Direction) == "left") {
 		    		  this.CurrentPlayer--;
 		    	  }
 		}
+	 public void PlayerDraw(Player P) {
+		 P.playerHand.add(this.UnoDeck.drawCard());
+	 }
 	 
 	 public void drawTwo() {
               if(this.TopCard.getType() == "DrawTwo") {
-            	  this.players.get(this.CurrentPlayer).drawcard;
-            	  this.players.get(this.CurrentPlayer).drawcard;
+            	  PlayerDraw( this.players.get(this.CurrentPlayer));
+            	  PlayerDraw( this.players.get(this.CurrentPlayer));
               }
-              this.rotate();
 	 }
+	 
 	 public void ReverseDirection() {
 		 if(this.TopCard.getType() == "Reverse") {
 			if( this.Direction == "right") {
@@ -69,23 +78,21 @@ import java.util.Scanner;
 			else if(this.Direction == "left") {
 				this.Direction = "right";
 			}
-			this.rotate();
 			}
 	 }
 	 public void drawFour() {
-         if(this.TopCard.getType() == "DrawFour") {
-       	  this.players.get(this.CurrentPlayer).drawcard;
-       	  this.players.get(this.CurrentPlayer).drawcard;
-       	this.players.get(this.CurrentPlayer).drawcard;
-     	  this.players.get(this.CurrentPlayer).drawcard;
+         if(this.TopCard.getType() == "Wild Draw Four") {
+        	 PlayerDraw( this.players.get(this.CurrentPlayer));
+        	 PlayerDraw( this.players.get(this.CurrentPlayer));
+        	 PlayerDraw( this.players.get(this.CurrentPlayer));
+        	 PlayerDraw( this.players.get(this.CurrentPlayer));
          }
-         this.rotate();
-		 
 	 }
 	 public void Skip() {
 		 if(this.TopCard.getType() == "Skip1") {
 			 this.rotate();
 		 }
+		 
 	 }
 	 public void Wildcard() {
 		 if(this.TopCard.getType() == "Wild") {
@@ -97,64 +104,53 @@ import java.util.Scanner;
 	 }
 	 
 	 public void CheckUno() {
-		 if(players.get(this.CurrentPlayer).PlayerHandSize == 1) {
+		 if(players.get(this.CurrentPlayer).playerHandSize() == 1) {
 			 System.out.println("Uno");
 		 }
 	 }
+	 
 	 public void checkWinner() {
-		 if(players.get(this.CurrentPlayer).PlayerHandSize == 0) {
+		 if(players.get(this.CurrentPlayer).playerHandSize() == 0) {
 			 System.out.println("Player number "+(this.CurrentPlayer + 1) +"is a winner");
 		 }
 	 }
+	
 	public void GameLogic() {
-		this.ReverseDirection();
-		if(this.TopCard.getColor()=="Red"){//"Red", "Green", "Blue", "Yellow"
-			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
-				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Red") {
-					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
-				}
-				}
-			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
-			   this.CheckUno();
-			   this.checkWinner();
-			}
-		if(this.TopCard.getColor()=="Green"){//"Red", "Green", "Blue", "Yellow"
-			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
-				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Green") {
-					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
-				}
-				}
-			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
-			   this.CheckUno();
-			   this.checkWinner();
-			}
-		if(this.TopCard.getColor()=="Blue"){//"Red", "Green", "Blue", "Yellow"
-			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
-				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Blue") {
-					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
-				}
-				}
-			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
-			   this.CheckUno();
-			   this.checkWinner();
-			}
-		if(this.TopCard.getColor()=="Yellow"){//"Red", "Green", "Blue", "Yellow"
-			for(int i=0;i<players.get(this.CurrentPlayer).PlayerHand.size();i++) {
-				if(players.get(this.CurrentPlayer).PlayerHand.get(i).getColor()=="Yellow") {
-					this.TopCard =  players.get(this.CurrentPlayer).playCard (i) ;
-				}
-				}
-			   this.TopCard = players.get(this.CurrentPlayer).playCard (0) ;
-			   this.CheckUno();
-			   this.checkWinner();
-			}
-		this.drawFour();
-		this.drawTwo();
-		this.Skip();
-		this.Wildcard();
-		this.CheckUno();
-		this.checkWinner();
-		
-		}
+		 if(this.TopCard.getType() == "Draw two") {
+			 this.players.get(this.CurrentPlayer).addCardHand(this.UnoDeck.drawCard());
+			 this.players.get(this.CurrentPlayer).addCardHand(this.UnoDeck.drawCard());
+		 }
+		 if(this.TopCard.getType() == "Wild Draw Four") {
+			 this.players.get(this.CurrentPlayer).addCardHand(this.UnoDeck.drawCard());
+			 this.players.get(this.CurrentPlayer).addCardHand(this.UnoDeck.drawCard());
+			 this.players.get(this.CurrentPlayer).addCardHand(this.UnoDeck.drawCard());
+			 this.players.get(this.CurrentPlayer).addCardHand(this.UnoDeck.drawCard());
+		 }
+		 if(this.TopCard.getType() == "Reverse") {
+			 this.ReverseDirection();
+		 }
+		 if(this.TopCard.getType() == "Skip") {
+			 this.Skip();
+		 }
+		 if(this.TopCard.getType() == "Wild Card") {
+			this.Wildcard();
+		 }
+		 for(int i=0;i<this.players.get(this.CurrentPlayer).playerHandSize();i++) {
+		 
+			 if((this.players.get(this.CurrentPlayer).canPlayCard(this.players.get(this.CurrentPlayer).playerHand.get(i), this.TopCard)) == true) {
+                  this.TopCard= this.players.get(this.CurrentPlayer).playCard(i);
+			 }
+		 }
+		 
+		 this.CheckUno();
+		 this.checkWinner();
+		 this.rotate();
 	}
-	 
+  }
+		
+		
+		
+		
+		
+		
+		

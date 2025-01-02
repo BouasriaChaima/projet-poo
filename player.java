@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Player {
 	private String name;
-	private ArrayList<Card> playerHand ;
+	public ArrayList<Card> playerHand ;
 	 
 	 //controctor 
 	   public Player (String name) {
@@ -44,8 +44,7 @@ public class Player {
 		    return true;
 		 }
 		  // Check for matches
-		 return card.getColor().equals(topCard.getColor()) || 
-		           (card.getType().equals(topCard.getType()) && card.getValue() == topCard.getValue());
+		 return card.getColor().equals(topCard.getColor()) || (card.getValue() == topCard.getValue());
 	   }
 	   
 	   // a method to remove a card from the player's hand 
@@ -57,7 +56,7 @@ public class Player {
 		   }
 		   
 		   // add a card to the player's hand 
-		   public void addCardHnad (Card card ) {
+		   public void addCardHand (Card card ) {
 			   if ( card != null) {
 				   playerHand.add(card);  
 			   }   
