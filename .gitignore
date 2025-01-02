@@ -3,4 +3,9 @@
 /Skip.class
 /Deck.class
 /DrawTwo.class
+<<<<<<< HEAD
 /game.class
+=======
+/player.class
+/Player.class
+>>>>>>> f942dff6577c804e717a1c3e19b682e310239f45
