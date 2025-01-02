@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Player {
 	private String name;
-	 private ArrayList<Card> playerHand ;
+	private ArrayList<Card> playerHand ;
 	 
 	 //controctor 
 	   public Player (String name) {
@@ -30,12 +30,12 @@ public class Player {
 		   return playerHand.size();
 	   }
 	   
-	/*   // a method to give 7 cards to the player 
+	 /*  // a method to give 7 cards to the player 
 	   public void initialCards () {
 			   for (int i = 0 ; i<7;i++) {
-				   playerHand.add(Deck.drawCard());
+				   playerHand.add(deck.drawCard());
 			   }
-	   } */
+	   }  */
 	   
 	   // a method to check if a specific card can be played 
 	public boolean canPlayCard (Card card, Card topCard) {
@@ -55,11 +55,14 @@ public class Player {
 			   }
 			return null;
 		   }
-	   
-	   // add a card to the player's hand 
-	   public void drawCard (Card card) {
-		   if(card != null) {
-			   playerHand.add(card);
-		   }
 		   
-	   }}
+		   // add a card to the player's hand 
+		   public void addCardHnad (Card card ) {
+			   if ( card != null) {
+				   playerHand.add(card);  
+			   }   
+		   }
+	   
+
+		   
+	   }
