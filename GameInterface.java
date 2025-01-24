@@ -1,74 +1,99 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GameInterface {
+public class UnoGameInterface {
     private Game game;
     private Scanner scanner;
 
-    public GameInterface(int numPlayers, int maxPlayers) {
-        game = new Game(numPlayers, maxPlayers);
+    public UnoGameInterface() {
         scanner = new Scanner(System.in);
     }
 
     public void startGame() {
+        System.out.println("Welcome to UNO!");
+        System.out.print("Enter number of players (2-4): ");
+        int numPlayers = scanner.nextInt();
+        game = new Game(numPlayers, 4); // Assuming max players is 4
+
         while (true) {
-            printGameStatus();
-            Player currentPlayer = game.getPlayers().get(game.getCurrentPlayer());
-            System.out.println("It's " + currentPlayer.getName() + "'s turn.");
+            displayGameState();
+            Player currentPlayer = game.getPlayers().get(game.getCurrentPlayer()); // Get current player
+            System.out.println(currentPlayer.getName() + "'s turn.");
 
-            System.out.println("Your hand: ");
-            displayHand(currentPlayer);
-
-            System.out.println("Top card: " + game.getTopCard().getColor() + " " + game.getTopCard().getType());
+            System.out.println("Choose an action:");
             System.out.println("1. Play a card");
             System.out.println("2. Draw a card");
-            System.out.println("3. Skip turn");
+            System.out.println("3. Quit");
 
             int choice = scanner.nextInt();
-
-            if (choice == 1) {
-                playCard(currentPlayer);
-            } else if (choice == 2) {
-                drawCard(currentPlayer);
-            } else if (choice == 3) {
-                game.rotate(); // Skip the turn by rotating to the next player
+            switch (choice) {
+                case 1:
+                    playCard(currentPlayer);
+                    break;
+                case 2:
+                    drawCard(currentPlayer);
+                    break;
+                case 3:
+                    System.out.println("Thanks for playing!");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
             }
 
-            game.GameLogic(); // Execute the game logic (handle special card effects)
-
-            if (currentPlayer.playerHandSize() == 0) {
-                System.out.println(currentPlayer.getName() + " wins the game!");
-                break;
-            }
+            game.GameLogic(); // Process game logic after each turn
         }
     }
 
-    private void printGameStatus() {
-        System.out.println("\n------ Game Status ------");
-        System.out.println("Number of players: " + game.getPlayers().size());
-        System.out.println("Current player: " + game.getPlayers().get(game.getCurrentPlayer()); // Get current player
-    }
-
-    private void displayHand(Player player) {
-        for (int i = 0; i < player.playerHandSize(); i++) {
-            Card card = player.getplayerHand().get(i);  // Corrected method name
-            System.out.println(i + ". " + card.getColor() + " " + card.getType());
+    private void displayGameState() {
+        System.out.println("Top Card: " + game.getTopCard());
+        for (Player player : game.getPlayers()) {
+            System.out.println(player.getName() + "'s hand: " + player.getplayerHnad());
         }
     }
 
-    private void playCard(Player currentPlayer) {
-        System.out.println("Select a card to play by entering its index: ");
+    private void playCard(Player player) {
+        System.out.println("Your hand: " + player.getplayerHnad());
+        System.out.print("Enter the index of the card to play: ");
         int cardIndex = scanner.nextInt();
-        if (currentPlayer.canPlayCard(currentPlayer.getplayerHand().get(cardIndex), game.getTopCard())) {  // Corrected method name
-            Card playedCard = currentPlayer.playCard(cardIndex);
-            game.setTopCard(playedCard);
+
+        // Validate the card index
+        if (cardIndex < 0 || cardIndex >= player.playerHandSize()) {
+            System.out.println("Invalid card index. Try again.");
+            return;
+        }
+
+        Card playedCard = player.getplayerHnad().get(cardIndex); // Get the card to be played
+        Card topCard = game.getTopCard();
+
+        // Validate if the card can be played
+        if (player.canPlayCard(playedCard, topCard)) {
+            player.playCard(cardIndex); // Play the card
+            game.setTopCard(playedCard); // Update the top card
+
+            // Handle special card effects
+            if (playedCard.getType().equals("Wild")) {
+                game.Wildcard(); // Call the Wildcard method from Game
+            } else if (playedCard.getType().equals("Wild Draw Four")) {
+                game.drawFour(); // Call the drawFour method from Game
+            } else if (playedCard.getType().equals("Skip")) {
+                game.Skip(); // Call the Skip method from Game
+            } else if (playedCard.getType().equals("Reverse")) {
+                game.ReverseDirection(); // Call the ReverseDirection method from Game
+            }
         } else {
-            System.out.println("You cannot play that card!");
+            System.out.println("You cannot play that card. Please choose another action.");
         }
     }
 
-    private void drawCard(Player currentPlayer) {
-        game.playerDraw(currentPlayer);
-        System.out.println(currentPlayer.getName() + " drew a card.");
+    private void drawCard(Player player) {
+        Card drawnCard = game.getDeck().drawCard(); // Draw a card from the deck
+        if (drawnCard != null) {
+            player.drawCard(drawnCard); // Add the drawn card to the player's hand
+            System.out.println(player.getName() + " drew: " + drawnCard.getColor() + " " + drawnCard.getType());
+        }
+    }
+
+    public static void main(String[] args) {
+        UnoGameInterface ui = new UnoGameInterface();
+        ui.startGame();
     }
 }
