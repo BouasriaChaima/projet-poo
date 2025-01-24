@@ -51,7 +51,7 @@ public class GameInterface {
 
     private void displayHand(Player player) {
         for (int i = 0; i < player.playerHandSize(); i++) {
-            Card card = player.getPlayerHand().get(i);  // Corrected method name
+            Card card = player.getplayerHand().get(i);  // Corrected method name
             System.out.println(i + ". " + card.getColor() + " " + card.getType());
         }
     }
@@ -59,7 +59,7 @@ public class GameInterface {
     private void playCard(Player currentPlayer) {
         System.out.println("Select a card to play by entering its index: ");
         int cardIndex = scanner.nextInt();
-        if (currentPlayer.canPlayCard(currentPlayer.getPlayerHand().get(cardIndex), game.getTopCard())) {  // Corrected method name
+        if (currentPlayer.canPlayCard(currentPlayer.getplayerHand().get(cardIndex), game.getTopCard())) {  // Corrected method name
             Card playedCard = currentPlayer.playCard(cardIndex);
             game.setTopCard(playedCard);
         } else {
