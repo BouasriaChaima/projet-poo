@@ -32,4 +32,14 @@ public class Card {
     public void setValue(int value) {
         this.value = value;
     }
+    
+    @Override
+    public String toString() {
+        // Display the card's color, type, and value (if applicable)
+        if (value >= 0) {
+            return color + " " + type + " " + value; // For number cards
+        } else {
+            return color + " " + type; // For special cards (like Wild, Draw Two, etc.)
+        }
+    }
 }
