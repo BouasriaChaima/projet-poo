@@ -25,18 +25,17 @@ public class Player {
 		   return new ArrayList<>(playerHand);
 	   }
 	   
+	   // set player's hand 
+	   public void setPlayerHand () {
+		   this.playerHand = new ArrayList <>();
+	   }
+	   
 		// get number of cards in player's hand 
 	   int playerHandSize() {
 		   return playerHand.size();
 	   }
 	   
-	 /*  // a method to give 7 cards to the player 
-	   public void initialCards () {
-			   for (int i = 0 ; i<7;i++) {
-				   playerHand.add(deck.drawCard());
-			   }
-	   }  */
-	   
+	
 	   // a method to check if a specific card can be played 
 	public boolean canPlayCard (Card card, Card topCard) {
 		 // Wild cards are always be played 

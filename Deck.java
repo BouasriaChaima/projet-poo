@@ -28,8 +28,8 @@ public class Deck {
             // ading two special action cards
             cards.add(new DrawTwo(color)); // two Draw Two cards
             cards.add(new DrawTwo(color)); // second Draw Two card
-            cards.add(new Skip(color)); // two Skip cards
-            cards.add(new Skip(color)); // second Skip card
+            cards.add(new Skip1(color)); // two Skip cards
+            cards.add(new Skip1(color)); // second Skip card
             cards.add(new Reverse(color)); // two Reverse cards
             cards.add(new Reverse(color)); // second Reverse card
         }
