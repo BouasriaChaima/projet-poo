@@ -83,56 +83,63 @@ public class Game {
     }
     
     // Method to handle playing a card
-       private void playCard(Player player) {
-           System.out.print("Enter the index of the card to play: ");
-           int cardIndex = scanner.nextInt();
+    private void playCard(Player player) {
+        System.out.print("Enter the index of the card to play: ");
+        int cardIndex = scanner.nextInt();
 
-           // Validate the card index
-           if (cardIndex < 0 || cardIndex >= player.playerHandSize()) {
-               System.out.println("Invalid card index. Try again.");
-               return;
-           }
+        // Validate the card index
+        if (cardIndex < 0 || cardIndex >= player.playerHandSize()) {
+            System.out.println("Invalid card index. Try again.");
+            playCard(player); // Let the player try again
+            return;
+        }
 
-           Card cardToPlay = player.getplayerHand().get(cardIndex);
-           
-           // Validate if the card can be played
-           if (player.canPlayCard(cardToPlay, TopCard)) {
-               Card playedCard = player.playCard(cardIndex);
-               TopCard = playedCard; // Update the top card
-               System.out.println(player.getName() + " played: " + playedCard);
-           } else {
-               System.out.println("You cannot play that card. It must match the color, type, or value of the top card.");
-               System.out.println("Choose another action:");
-               System.out.println("1. Play a different card");
-               System.out.println("2. Draw a card");
-               
-               int choice = scanner.nextInt();
-               switch (choice) {
-                   case 1:
-                       playCard(player); // Recursively call playCard to allow selecting another card
-                       break;
-                   case 2:
-                       PlayerDraw(player);
-                       if (Direction.equals("right")) {
-                           CurrentPlayer = (CurrentPlayer + 1) % numPlayers; // Move to the next player
-                       } else {
-                           CurrentPlayer = (CurrentPlayer - 1 + numPlayers) % numPlayers; // Move to the previous player
-                       }
-                       break;
-                   default:
-                       System.out.println("Invalid choice. You will draw a card.");
-                       PlayerDraw(player);
-                       if (Direction.equals("right")) {
-                           CurrentPlayer = (CurrentPlayer + 1) % numPlayers; // Move to the next player
-                       } else {
-                           CurrentPlayer = (CurrentPlayer - 1 + numPlayers) % numPlayers; // Move to the previous player
-                       }
-                       break;
-               }
-           }
-       }
-   
+        Card cardToPlay = player.getplayerHand().get(cardIndex);
+        
+        // Validate if the card can be played
+        if (player.canPlayCard(cardToPlay, TopCard)) {
+            Card playedCard = player.playCard(cardIndex);
+            TopCard = playedCard; // Update the top card
+            System.out.println(player.getName() + " played: " + playedCard);
+            handleSpecialCards(); // Handle any special card effects immediately
+        } else {
+            System.out.println("You cannot play that card. It must match the color, type, or value of the top card.");
+            getPlayerAction(player); // Let the player choose another action
+        }
+    }
+
+    // Method to handle player action choices when they can't play a card
+    private void getPlayerAction(Player player) {
+        System.out.println("Choose an action:");
+        System.out.println("1. Play a different card");
+        System.out.println("2. Draw a card");
+        
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                playCard(player); // Let the player try to play another card
+                break;
+            case 2:
+                PlayerDraw(player);
+                advanceToNextPlayer();
+                break;
+            default:
+                System.out.println("Invalid choice. You will draw a card.");
+                PlayerDraw(player);
+                advanceToNextPlayer();
+                break;
+        }
+    }
     
+    // Method to advance to the next player
+    private void advanceToNextPlayer() {
+        if (Direction.equals("right")) {
+            CurrentPlayer = (CurrentPlayer + 1) % numPlayers; // Move to the next player
+        } else {
+            CurrentPlayer = (CurrentPlayer - 1 + numPlayers) % numPlayers; // Move to the previous player
+        }
+    }
+   
     // Method to check if any player has won
     public boolean checkWinner() {
         for (Player player : players) {
@@ -167,11 +174,7 @@ public class Game {
     public void Skip() {
         System.out.println("Skip card played! Next player's turn skipped.");
         // Skip the next player's turn
-        if (Direction.equals("right")) {
-            CurrentPlayer = (CurrentPlayer + 1) % numPlayers; // Skip the next player
-        } else {
-            CurrentPlayer = (CurrentPlayer - 1 + numPlayers) % numPlayers; // Skip the previous player
-        }
+        advanceToNextPlayer(); // Skip once more
     }
 
     // Method to draw a card for a player
@@ -194,6 +197,7 @@ public class Game {
         }
         System.out.println("Direction reversed to " + Direction);
     }
+    
     // Method to handle game logic after each turn
     public void GameLogic() {
         // Check if the current player has won
@@ -206,20 +210,12 @@ public class Game {
             System.out.println(players.get(CurrentPlayer).getName() + " says UNO!");
         }
 
-        // Handle special card effects
-        handleSpecialCards();
-
-        // Move to the next player
-        if (Direction.equals("right")) {
-            CurrentPlayer = (CurrentPlayer + 1) % numPlayers; // Move to the next player
-        } else {
-            CurrentPlayer = (CurrentPlayer - 1 + numPlayers) % numPlayers; // Move to the previous player
-        }
+        // Move to the next player - Special card effects are now handled immediately
+        advanceToNextPlayer();
     }
 
     // Method to start the game
     public void startGame() {
-    	
         while (OpenGame) {
             System.out.println("\n--- Current player: " + players.get(CurrentPlayer).getName() + " ---");
             System.out.println("Top Card: " + TopCard);
@@ -240,15 +236,10 @@ public class Game {
             switch (choice) {
                 case 1:
                     playCard(players.get(CurrentPlayer));
-                   
                     break;
                 case 2:
                     PlayerDraw(players.get(CurrentPlayer));
-                    if (Direction.equals("right")) {
-                        CurrentPlayer = (CurrentPlayer + 1) % numPlayers; // Move to the next player
-                    } else {
-                        CurrentPlayer = (CurrentPlayer - 1 + numPlayers) % numPlayers; // Move to the previous player
-                    }
+                    advanceToNextPlayer();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -257,5 +248,6 @@ public class Game {
             
             GameLogic();
         }
+       
     }
-    }
+}

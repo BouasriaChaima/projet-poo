@@ -10,7 +10,7 @@ public class WildCard extends Card {
     // Method to apply the effect of the Wild card
     public void applyEffect(ArrayList<Player> players, int currentPlayerIndex, Deck deck) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(players.get(currentPlayerIndex).getName() + " played a Wild card!");
+        
         // Prompt the player to choose a new color
         System.out.println("Choose a color (Red, Green, Blue, Yellow): ");
         String chosenColor = scanner.next();
